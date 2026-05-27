@@ -1,4 +1,3 @@
-import React from 'react';
 import { Stars } from '@react-three/drei';
 import ProceduralEnvironment from './ProceduralEnvironment';
 import ParticleSystem from './ParticleSystem';

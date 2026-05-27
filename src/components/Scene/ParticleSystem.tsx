@@ -1,6 +1,6 @@
-import React, { useRef, useMemo } from 'react';
+import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Points, BufferGeometry, Float32BufferAttribute, ShaderMaterial } from 'three';
+import { Points, ShaderMaterial } from 'three';
 
 const vertexShader = `
   uniform float uTime;
@@ -11,7 +11,8 @@ const vertexShader = `
     newPosition.y += sin(uTime + position.x * 0.5) * 0.5;
     newPosition.x += cos(uTime * 0.5 + position.y * 0.3) * 0.3;
 
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+    vec4 mvPosition = modelViewMatrix * vec4(newPosition, 1.0);
+    gl_Position = projectionMatrix * mvPosition;
     gl_PointSize = aScale * (50.0 / -mvPosition.z);
   }
 `;
@@ -64,15 +65,11 @@ export default function ParticleSystem() {
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          count={positions.length / 3}
-          array={positions}
-          itemSize={3}
+          args={[positions, 3]}
         />
         <bufferAttribute
           attach="attributes-aScale"
-          count={scales.length}
-          array={scales}
-          itemSize={1}
+          args={[scales, 1]}
         />
       </bufferGeometry>
       <shaderMaterial
