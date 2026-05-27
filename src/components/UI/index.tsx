@@ -1,99 +1,159 @@
 import { motion } from 'framer-motion';
-import GlassmorphismCard from './GlassmorphismCard';
-import NeonText from './NeonText';
-import FloatingButton from './FloatingButton';
+import FloatingPanels from './FloatingPanels';
+
+const CATEGORIES = ['WEBSITES', 'EXPERIENCES', 'IMMERSIVE 3D', 'MOTION', 'AI / GENERATIVE'];
 
 export default function UI() {
   return (
-    <div className="absolute inset-0 pointer-events-none z-10">
+    <div className="ui-root absolute inset-0 z-10 pointer-events-none select-none">
+      {/* Atmosphere overlays */}
+      <div className="overlay-grain" />
+      <div className="overlay-scanlines" />
+      <div className="overlay-vignette" />
+
       {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
+      <motion.header
+        initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="absolute top-8 left-8 pointer-events-auto"
+        transition={{ duration: 0.9, ease: 'easeOut' }}
+        className="absolute top-0 left-0 right-0 flex items-center justify-between px-8 py-6 pointer-events-auto"
       >
-        <NeonText text="DIGITAL UNIVERSE" color="cyan" size="md" />
+        <div className="font-mono text-xs tracking-[0.25em] text-white/80">
+          RECRUITIN<span className="text-cyber-pink">°</span>STUDIO
+          <span className="text-white/35"> — CREATIVE DIGITAL EXPERIENCES</span>
+        </div>
+        <nav className="flex gap-1 font-mono text-[11px] tracking-[0.2em]">
+          {['INDEX', 'ABOUT', 'CONTACT'].map((item) => (
+            <button
+              key={item}
+              className="px-3 py-1 rounded-full border border-white/15 text-white/70 hover:text-cyber-cyan hover:border-cyber-cyan/60 transition-colors"
+            >
+              {item}
+            </button>
+          ))}
+        </nav>
+      </motion.header>
+
+      {/* Orange spark accent */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.4, rotate: -40 }}
+        animate={{ opacity: 1, scale: 1, rotate: 0 }}
+        transition={{ delay: 0.4, duration: 1, ease: 'easeOut' }}
+        className="absolute top-[16%] right-[14%]"
+      >
+        <Spark />
       </motion.div>
 
-      {/* Navigation */}
-      <motion.nav
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.8 }}
-        className="absolute top-8 right-8 flex gap-6 pointer-events-auto"
+      {/* Left category menu */}
+      <motion.div
+        initial={{ opacity: 0, x: -16 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.6, duration: 0.9, ease: 'easeOut' }}
+        className="absolute left-8 top-1/2 -translate-y-1/2 pointer-events-auto"
       >
-        <button className="text-white/70 hover:text-cyber-cyan transition-colors">
-          Explore
-        </button>
-        <button className="text-white/70 hover:text-cyber-cyan transition-colors">
-          About
-        </button>
-        <button className="text-white/70 hover:text-cyber-cyan transition-colors">
-          Contact
-        </button>
-      </motion.nav>
+        <div className="font-mono text-[10px] tracking-[0.3em] text-white/35 mb-4">
+          WHAT ARE YOU LOOKING FOR?
+        </div>
+        <ul className="space-y-2">
+          {CATEGORIES.map((c, i) => (
+            <li key={c}>
+              <button className="group flex items-center gap-3 font-mono text-xs tracking-[0.18em] text-white/55 hover:text-white transition-colors">
+                <span className="text-cyber-cyan/50 group-hover:text-cyber-cyan tabular-nums">
+                  0{i + 1}
+                </span>
+                <span className="relative">
+                  {c}
+                  <span className="absolute left-0 -bottom-1 h-px w-0 bg-cyber-pink transition-all duration-300 group-hover:w-full" />
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </motion.div>
 
-      {/* Hero Section */}
-      <div className="absolute inset-0 flex items-center justify-center px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 1 }}
-          className="max-w-2xl text-center pointer-events-auto"
+      {/* Backdrop glitch headline (behind panels) */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <motion.h1
+          initial={{ opacity: 0, scale: 1.04 }}
+          animate={{ opacity: 0.12, scale: 1 }}
+          transition={{ delay: 0.4, duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
+          className="glitch font-display font-bold leading-[0.85] tracking-tighter text-white text-center whitespace-nowrap"
+          data-text="ENTER THE UNKNOWN"
+          style={{ fontSize: 'clamp(3rem, 12vw, 11rem)' }}
         >
-          <NeonText text="WELCOME TO THE FUTURE" color="pink" size="xl" />
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 0.8 }}
-            className="text-white/70 text-lg mt-6 mb-8 font-light tracking-wide"
-          >
-            Experience cutting-edge 3D interactions and cinematic visuals
-            in a next-generation digital universe.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.3, duration: 0.8 }}
-            className="flex gap-4 justify-center"
-          >
-            <FloatingButton text="EXPLORE" color="cyan" onClick={() => {}} />
-            <FloatingButton text="LEARN MORE" color="pink" onClick={() => {}} />
-          </motion.div>
-        </motion.div>
+          ENTER THE UNKNOWN
+        </motion.h1>
       </div>
 
-      {/* Bottom Cards */}
+      {/* Floating frosted-glass panel gallery */}
+      <FloatingPanels />
+
+      {/* Centered eyebrow + CTA (front layer) */}
+      <div className="absolute left-0 right-0 bottom-24 flex flex-col items-center gap-6 pointer-events-none">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.3, duration: 0.8 }}
+          className="font-mono text-[11px] tracking-[0.5em] text-cyber-cyan/80"
+        >
+          ⟡ NEXT-GEN DIGITAL UNIVERSE ⟡
+        </motion.div>
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5, duration: 0.8 }}
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.97 }}
+          className="pointer-events-auto px-10 py-3 rounded-full font-mono text-xs tracking-[0.25em] text-white border border-white/25 backdrop-blur-md bg-white/[0.03] hover:border-cyber-cyan hover:text-cyber-cyan transition-colors"
+        >
+          ENTER EXPERIENCE
+        </motion.button>
+      </div>
+
+      {/* Bottom meta */}
       <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.5, duration: 0.8 }}
-        className="absolute bottom-8 left-8 right-8 grid grid-cols-3 gap-4 pointer-events-auto"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.6, duration: 0.8 }}
+        className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-8 py-6 font-mono text-[10px] tracking-[0.25em] text-white/35"
       >
-        <GlassmorphismCard delay={1.6}>
-          <h3 className="text-cyber-cyan font-bold mb-2">IMMERSIVE</h3>
-          <p className="text-white/60 text-sm">
-            WebGL-powered visuals that respond to your every move
-          </p>
-        </GlassmorphismCard>
-
-        <GlassmorphismCard delay={1.8}>
-          <h3 className="text-cyber-pink font-bold mb-2">CINEMATIC</h3>
-          <p className="text-white/60 text-sm">
-            Particle systems and shader effects for stunning atmospheres
-          </p>
-        </GlassmorphismCard>
-
-        <GlassmorphismCard delay={2.0}>
-          <h3 className="text-cyber-blue font-bold mb-2">EXPERIMENTAL</h3>
-          <p className="text-white/60 text-sm">
-            Next-gen UI interactions that feel alive and interactive
-          </p>
-        </GlassmorphismCard>
+        <span>EST. 2026 · DOESBURG NL</span>
+        <span className="flex items-center gap-2">
+          SCROLL TO EXPLORE
+          <motion.span
+            animate={{ y: [0, 4, 0] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            ↓
+          </motion.span>
+        </span>
       </motion.div>
     </div>
+  );
+}
+
+function Spark() {
+  return (
+    <motion.svg
+      width="92"
+      height="92"
+      viewBox="0 0 100 100"
+      animate={{ rotate: 360 }}
+      transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
+      style={{ filter: 'drop-shadow(0 0 18px rgba(239,125,0,0.55))' }}
+    >
+      {Array.from({ length: 12 }).map((_, i) => (
+        <rect
+          key={i}
+          x="48"
+          y="6"
+          width="4"
+          height="34"
+          rx="2"
+          fill="#EF7D00"
+          transform={`rotate(${i * 30} 50 50)`}
+        />
+      ))}
+    </motion.svg>
   );
 }
